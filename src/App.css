@@ -36,3 +36,36 @@
     transform: rotate(360deg);
   }
 }
+
+.container {
+  margin: auto;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.search-card {
+  border: 1px solid #ddd;
+  margin: auto;
+  max-width: 300px;
+  max-height: 500px;
+  overflow-y: scroll;
+  box-shadow: 3px #282c34;
+}
+
+input {
+  width: 300px;
+  height: 30px;
+}
+
+.item {
+  padding: 10px;
+  border: 1px solid #eee;
+  cursor: pointer;
+}
+.item:hover {
+  background-color: aliceblue;
+}
+
+.hidden {
+  display: none;
+}
