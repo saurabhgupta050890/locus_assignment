@@ -6,6 +6,8 @@ function App() {
   let [userList, setuserList] = useState([]);
   let [searchResults, setSearchResults] = useState([]);
   let [searchTerm, setSearchTerm] = useState("");
+  let [selected, setSelected] = useState(null);
+  let [focus, setFocus] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -27,8 +29,12 @@ function App() {
           || x.items.join("|").toLowerCase().includes(searchText);
       });
       setSearchResults(temp);
+      if (temp.length === 0) {
+        setSelected(null);
+      }
     } else {
       setSearchResults([]);
+      setSelected(null);
     }
   }, [searchTerm]);
 
@@ -40,18 +46,36 @@ function App() {
   };
 
   const keyHandler = (e) => {
-    console.log(e.keyCode);
+    if (e.keyCode === 40 && (!selected || selected < searchResults.length - 1)) {
+      let t = (selected >= 0 && selected !== null && selected !== undefined) ? selected + 1 : 0;
+      setSelected(t);
+    } else if (e.keyCode === 38 && ((selected || selected === 0) && selected >= 0)) {
+      let t = selected === 0 ? null : selected - 1;
+      setSelected(t);
+    }
+  }
+
+  const blurHandler = (e) => {
+    setFocus(false);
+  }
+
+  const focusHandler = (e) => {
+    setFocus(true);
   }
 
   return (
     <div className="container">
       <div className="search-box">
-        <input type="text" placeholder="Search users by ID, address, name .... " onChange={searchHandler} onKeyDown={keyHandler} />
-        <div className="search-card">
+        <input type="text" placeholder="Search users by ID, address, name .... "
+          onChange={searchHandler}
+          onKeyDown={keyHandler}
+          onBlur={blurHandler}
+          onFocus={focusHandler} />
+        <div className={focus ? "search-card" : "search-card hidden"}>
           {
-            searchResults.map(x => {
+            searchResults.map((x, i) => {
               return (
-                <div key={x.id} className="item">
+                <div key={x.id} className={i === selected ? "highlight item" : "item"}>
                   <div>{x.id}</div>
                   <div>{x.name}</div>
                   <div>{x.address}</div>

@@ -66,6 +66,10 @@ input {
   background-color: aliceblue;
 }
 
+.highlight {
+  background-color: aliceblue;
+}
+
 .hidden {
   display: none;
 }
